@@ -9,7 +9,7 @@ class DomainParserTestCase(unittest.TestCase):
         assert domain_parser.parse_domain(
                 'http://www.google.com') == ('com', 'google', 'www')
 
-    def test_gaurdian(self):
+    def test_guardian(self):
         """Is 'co.uk', which is wildcarded in the TLD list, parsed properly?"""
         assert domain_parser.parse_domain(
                 'http://www.guardian.co.uk') == ('co.uk', 'guardian', 'www')

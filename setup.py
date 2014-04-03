@@ -36,7 +36,7 @@ class PyTest(TestCommand):
 setup(
     name='domain_parser',
     version=find_version('domain_parser', '__init__.py'),
-    url='http://github.com/jeffknupp/domain_parser/',
+    url='http://github.com/jeffknupp/domain-parser/',
     license='Apache Software License',
     author='Jeff Knupp',
     tests_require=['pytest'],

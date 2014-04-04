@@ -47,14 +47,15 @@ def parse_domain(url):
     unrecognizable TLD, assumes it is one level.
     """
 
+    if not url.startswith('http://'):
+        url = 'http://' + url
     top_level_domains = get_tlds()
     parsed = urlparse(url.lower())
-    hostname = getattr(parsed, 'netloc', url)
+    hostname = parsed.netloc
 
     tld = ''
     tld_index = 0
 
-    #uk.co.guardian.www
     uri = hostname.split('.')
 
     for index in range(len(uri)):

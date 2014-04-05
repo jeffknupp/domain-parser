@@ -34,8 +34,6 @@ def get_tlds():
     with open('.tlds.pickle', 'w') as outfile:
         pickle.dump(tlds, outfile)
 
-    import pprint
-    pprint.pprint(tlds)
     return tlds
 
 def parse_domain(url):

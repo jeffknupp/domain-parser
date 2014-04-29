@@ -16,7 +16,7 @@ def get_tlds():
     publicsuffix.org."""
     try:
         with open('.tlds.pickle', 'rb') as infile:
-	       return pickle.load(infile)
+           return pickle.load(infile)
     except IOError:
         pass
     try:
@@ -32,8 +32,8 @@ def get_tlds():
         else:
             tlds['normal'].append(line.strip())
 
-        with open('.tlds.pickle', 'wb') as outfile:
-            pickle.dump(tlds, outfile)
+    with open('.tlds.pickle', 'wb') as outfile:
+        pickle.dump(tlds, outfile)
 
     return tlds
 

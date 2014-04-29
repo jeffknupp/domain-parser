@@ -2,10 +2,12 @@
 
 try:
     import cPickle as pickle
-except:
+    from urllib2 import urlopen
+    from urlparse import urlparse
+except ImportError:
     import pickle
-import urllib2
-from urlparse import urlparse
+    from urllib.request import urlopen
+    from urllib.parse import urlparse
 
 TLD_URL = 'https://publicsuffix.org/list/effective_tld_names.dat'
 
@@ -18,7 +20,7 @@ def get_tlds():
     except IOError:
         pass
 
-    response = urllib2.urlopen(TLD_URL)
+    response = urlopen(TLD_URL)
 
     if response.code != 200:
         raise RuntimeError('Unable to get list of TLDs')

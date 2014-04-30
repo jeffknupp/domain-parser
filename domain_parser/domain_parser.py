@@ -1,10 +1,12 @@
 """Parses a URL using the publicsuffix.org TLD list."""
 
 try:
+    python_version = ''
     import cPickle as pickle
     from urllib2 import urlopen
     from urlparse import urlparse
 except ImportError:
+    python_version = '3'
     import pickle
     from urllib.request import urlopen
     from urllib.parse import urlparse
@@ -50,7 +52,8 @@ def parse_domain(url):
         url = 'http://' + url
     top_level_domains = get_tlds()
     parsed = urlparse(url.lower())
-    hostname = parsed.netloc
+    hostname = (parsed.netloc if python_version else 
+        parsed.netloc.decode('utf-8'))
 
     tld = ''
     tld_index = 0
@@ -68,4 +71,5 @@ def parse_domain(url):
     second_level_domain = ''.join(uri[tld_index-1:tld_index])
     subdomains = '.'.join(uri[:tld_index-1])
 
-    return tld, second_level_domain, subdomains
+    return tld if python_version else tld.encode('utf-8'),\
+     str(second_level_domain), subdomains

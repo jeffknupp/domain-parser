@@ -17,7 +17,7 @@ def get_tlds():
     """Return a list of top-level domains as maintained by Mozilla and
     publicsuffix.org."""
     try:
-        with open('.tlds.pickle', 'rb') as infile:
+        with open('.tlds{}.pickle'.format(python_version), 'rb') as infile:
            return pickle.load(infile)
     except IOError:
         pass
@@ -34,7 +34,7 @@ def get_tlds():
         else:
             tlds['normal'].append(line.strip())
 
-    with open('.tlds.pickle', 'wb') as outfile:
+    with open('.tlds{}.pickle'.format(python_version), 'wb') as outfile:
         pickle.dump(tlds, outfile)
 
     return tlds

@@ -18,3 +18,8 @@ class DomainParserTestCase(unittest.TestCase):
         """Is 'www.google.com', which doesn't include the scheme ('http'), parsed properly?"""
         assert domain_parser.parse_domain(
                 'www.google.com') == ('com', 'google', 'www')
+
+    def test_secure_scheme(self):
+        """Is 'https://www.google.com', which include 'https' instead of 'http', parsed properly?"""
+        assert domain_parser.parse_domain(
+                'https://www.google.com') == ('com', 'google', 'www')

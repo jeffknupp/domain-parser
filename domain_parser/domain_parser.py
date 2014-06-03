@@ -48,7 +48,7 @@ def parse_domain(url):
     unrecognizable TLD, assumes it is one level.
     """
 
-    if not url.startswith('http://'):
+    if not (url.startswith('http://') or url.startswith('https://')):
         url = 'http://' + url
     top_level_domains = get_tlds()
     parsed = urlparse(url.lower())

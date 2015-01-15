@@ -20,7 +20,7 @@ def find_version(*file_paths):
         return version_match.group(1)
     raise RuntimeError("Unable to find version string.")
 
-long_description = read('README.md')
+long_description = read('README.rst')
 
 class PyTest(TestCommand):
     def finalize_options(self):

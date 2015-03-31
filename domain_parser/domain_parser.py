@@ -1,4 +1,6 @@
 """Parses a URL using the publicsuffix.org TLD list."""
+import os
+import pylru
 
 try:
     python_version = ''
@@ -16,8 +18,10 @@ TLD_URL = 'https://publicsuffix.org/list/effective_tld_names.dat'
 def get_tlds():
     """Return a list of top-level domains as maintained by Mozilla and
     publicsuffix.org."""
+    user_home = os.getenv('HOME', './')
+    pickle_path = os.path.join(user_home, '.tlds{}.pickle'.format(python_version))
     try:
-        with open('.tlds{}.pickle'.format(python_version), 'rb') as infile:
+        with open(pickle_path, 'rb') as infile:
            return pickle.load(infile)
     except IOError:
         pass
@@ -34,11 +38,12 @@ def get_tlds():
         else:
             tlds['normal'].append(line.strip())
 
-    with open('.tlds{}.pickle'.format(python_version), 'wb') as outfile:
+    with open(pickle_path, 'wb') as outfile:
         pickle.dump(tlds, outfile)
 
     return tlds
 
+@pylru.lrudecorator(10000)
 def parse_domain(url):
     """Return a tuple containing any subdomains, the second-level domain, and
     the top-level domain for a given URI.
@@ -50,9 +55,8 @@ def parse_domain(url):
 
     if not (url.startswith('http://') or url.startswith('https://')):
         url = 'http://' + url
-    top_level_domains = get_tlds()
     parsed = urlparse(url.lower())
-    hostname = (parsed.netloc if python_version else 
+    hostname = (parsed.netloc if python_version else
         parsed.netloc.decode('utf-8'))
 
     tld = ''
@@ -63,9 +67,9 @@ def parse_domain(url):
     for index in range(len(uri)):
         tld_index = index
         tld = '.'.join(uri[index:])
-        if tld in top_level_domains['normal']:
+        if tld in TLD_CACHE['normal']:
             break
-        if '.'.join(['*'] + [uri[index+1]]) in top_level_domains['starred']:
+        if '.'.join(['*'] + [uri[index+1]]) in TLD_CACHE['starred']:
             break
 
     second_level_domain = ''.join(uri[tld_index-1:tld_index])
@@ -73,3 +77,5 @@ def parse_domain(url):
 
     return tld if python_version else tld.encode('utf-8'),\
      str(second_level_domain), subdomains
+
+TLD_CACHE = get_tlds()

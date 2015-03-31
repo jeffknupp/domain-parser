@@ -41,6 +41,7 @@ setup(
     author='Jeff Knupp',
     tests_require=['pytest'],
     cmdclass={'test': PyTest},
+    install_requires=['pylru>=1.0.6'],
     author_email='jeff@jeffknupp.com',
     description='Proper domain parser using TLD info from publicsuffix.org',
     long_description=long_description,

@@ -12,3 +12,7 @@ pickle file. If you want to refresh the list, simply delete the pickle file.
 
 There are tests, but not enough. I'm hoping that if people find this useful
 they'll contribute test cases to the projects.
+
+# New in version 0.0.4
+
+* Use `pylru` and TLD_CACHE to speed up parsing in long-running programs 

@@ -44,13 +44,16 @@ def get_tlds():
     return tlds
 
 @pylru.lrudecorator(10000)
-def parse_domain(url):
+def parse_domain(url, encoding='utf-8'):
     """Return a tuple containing any subdomains, the second-level domain, and
     the top-level domain for a given URI.
 
     Uses a list of active top-level domains to ensure long TLD's such as
     '.co.uk' are correctly treated as a single TLD.  If the domain has an
     unrecognizable TLD, assumes it is one level.
+
+    The optional encoding argument defaults to 'utf-8' and sets the encoding
+    for the output strings.  Has no effect when running with Python 3.
     """
 
     if not (url.startswith('http://') or url.startswith('https://')):
@@ -75,7 +78,11 @@ def parse_domain(url):
     second_level_domain = ''.join(uri[tld_index-1:tld_index])
     subdomains = '.'.join(uri[:tld_index-1])
 
-    return tld if python_version else tld.encode('utf-8'),\
-     str(second_level_domain), subdomains
+    if python_version:
+        return tld, second_level_domain, subdomains
+    else:
+        return tld.encode(encoding),\
+               second_level_domain.encode(encoding),\
+               subdomains.encode(encoding)
 
 TLD_CACHE = get_tlds()

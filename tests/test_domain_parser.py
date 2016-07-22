@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import unittest
 
 from domain_parser import domain_parser
@@ -23,3 +24,9 @@ class DomainParserTestCase(unittest.TestCase):
         """Is 'https://www.google.com', which include 'https' instead of 'http', parsed properly?"""
         assert domain_parser.parse_domain(
                 'https://www.google.com') == ('com', 'google', 'www')
+
+    def test_internationalized_domain_name(self):
+        """Is 'маил.гоогле.рф', which is entirely composed of non-latin characters, parsed properly?"""
+        # Should always pass when run with Python 3.
+        assert domain_parser.parse_domain(
+                'http://маил.гоогле.рф') == ('рф', 'гоогле', 'маил')
